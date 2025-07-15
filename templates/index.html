@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NFL Akadémia</title>
+    <style>
+        body { font-family: sans-serif; max-width: 800px; margin: 40px auto; padding: 0 20px; line-height: 1.6; }
+        h1 { color: #2c3e50; }
+        select { width: 100%; padding: 10px; margin-bottom: 20px; font-size: 16px; }
+        #description-display { padding: 20px; background-color: #f9f9f9; border: 1px solid #ddd; border-radius: 5px; min-height: 100px; }
+    </style>
+</head>
+<body>
+
+    <h1>🏈 NFL Akadémia</h1>
+    <p>Válassz egy kifejezést, szabályt vagy csapatot a listából, hogy megjelenjen a leírása!</p>
+
+    <select id="terms-select">
+        <option value="">Válassz...</option>
+        
+        {% for category in categories %}
+            <optgroup label="{{ category['name'] }}">
+                {% for entry in entries %}
+                    {% if entry['category_id'] == category['id'] %}
+                        <option value="{{ entry['id'] }}">{{ entry['term'] }}</option>
+                    {% endif %}
+                {% endfor %}
+            </optgroup>
+        {% endfor %}
+    </select>
+
+    <div id="description-display">
+        <p>Itt fog megjelenni a kiválasztott elem leírása.</p>
+    </div>
+
+    <script>
+        // A Flask által átadott összes adatot beletesszük egy JavaScript változóba.
+        // A 'tojson' filter biztonságosan konvertálja a Python adatokat JSON formátumra.
+        const entries = {{ entries | tojson }};
+
+        const selectElement = document.getElementById('terms-select');
+        const descriptionDisplay = document.getElementById('description-display');
+
+        selectElement.addEventListener('change', (event) => {
+            const selectedId = event.target.value;
+
+            // Ha a "Válassz..." opciót választják, töröljük a leírást.
+            if (!selectedId) {
+                descriptionDisplay.innerHTML = '<p>Itt fog megjelenni a kiválasztott elem leírása.</p>';
+                return;
+            }
+
+            // Megkeressük a kiválasztott ID-hoz tartozó bejegyzést az 'entries' tömbben.
+            const selectedEntry = entries.find(entry => entry.id == selectedId);
+
+            if (selectedEntry) {
+                // Ha megtaláltuk, beállítjuk a leírását a div tartalmának.
+                descriptionDisplay.innerHTML = `<p>${selectedEntry.description}</p>`;
+            }
+        });
+    </script>
+
+</body>
+</html>
