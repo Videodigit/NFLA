@@ -61,15 +61,25 @@ try:
         ("Roughing the Passer (Irányító durva támadása)", "Védői büntetés (15 yard és automatikus első kísérlet). Szigorúan védik az irányítókat; miután eldobta a labdát, nem lehet őt durván támadni vagy a földre vinni.", 1),
         
         # === Kifejezések (category_id = 2) ===
-        ("Sack", "Amikor a védelem a labdát birtokló irányítót (quarterback) a kezdővonal mögött a földre viszi.", 2),
-        ("Interception", "Amikor egy védőjátékos elkapja az ellenfél irányítójának dobását.", 2),
+        ("Audible", "Amikor az irányító a felállás után, de a játék megkezdése előtt megváltoztatja az előre megbeszélt taktikát, és ezt kiabálva jelzi a többieknek.", 2),
+        ("Blitz", "A védelem egy agresszív taktikája, amikor a szokásosnál több játékost (linebackereket, védőfalembereket) küldenek az irányító azonnali letámadására.", 2),
+        ("Hail Mary", "A mérkőzés legvégén, reménytelen helyzetben eldobott, rendkívül magas és hosszú passz a célterület felé, abban bízva, hogy valamelyik csapattárs csodával határos módon elkapja.", 2),
+        ("Interception (INT)", "Amikor egy védőjátékos elkapja az ellenfél irányítójának dobását. A labdabirtoklás azonnal a védekező csapathoz kerül.", 2),
         ("Line of Scrimmage (Kezdővonal)", "Az a képzeletbeli vonal, ahonnan a játékok indulnak. A támadók és a védők e vonal két oldalán sorakoznak fel.", 2),
+        ("Play Action Pass", "Egy cseles passzjáték, ami futásnak indul. Az irányító úgy tesz, mintha átadná a labdát a futójátékosnak, majd ehelyett passzol, becsapva ezzel a futásra számító védelmet.", 2),
         ("Pocket (Zseb)", "Az a képzeletbeli terület, amit a támadófal tagjai alakítanak ki az irányító körül, hogy megvédjék őt a passz eldobásáig.", 2),
+        ("Quarterback (QB) - Irányító", "A támadósor vezére, ő kapja a labdát minden játék elején. Döntenie kell, hogy fut, passzol, vagy átadja a labdát egy futónak.", 2),
+        ("Red Zone", "A pályának az ellenfél célterületétől (end zone) számított 20 yardos szakasza. Innen a legnagyobb az esély a pontszerzésre.", 2),
+        ("Running Back (RB) - Futójátékos", "A támadósor játékosa, akinek fő feladata, hogy a labdát cipelve a földön haladjon előre, áttörve a védelmen.", 2),
+        ("Sack", "Amikor a védelem a labdát birtokló irányítót (quarterback) a kezdővonal mögött a földre viszi (szereli).", 2),
+        ("Screen Pass", "Egy rövid, cseles passzjáték. A támadófal először engedi, hogy a védők letámadják az irányítót, aki a védők mögé, egy üres területre passzolja a labdát, ahol a futó vagy elkapó már blokkolókra számíthat.", 2),
+        ("Special Teams", "Az a speciális csapat, amelyik a rúgójátékoknál (kezdőrúgás, punt, field goal) van a pályán.", 2),
+        ("Turnover (Labdavesztés)", "Az a helyzet, amikor a támadó csapat elveszíti a labdát, és az az ellenfélhez kerül. Két fő formája a Fumble és az Interception.", 2),
+        ("Wide Receiver (WR) - Elkapó", "A támadósor gyors játékosa, akinek fő feladata, hogy az irányító által dobott passzokat elkapja.", 2),
 
         # === Csapatok (AFC - category_id = 3) ===
         ("Buffalo Bills", "Hazai város: Orchard Park, New York. Híresek a rendkívül szenvedélyes szurkolótáborukról, a 'Bills Mafia'-ról.", 3),
         ("Miami Dolphins", "Hazai város: Miami Gardens, Florida. Az 1972-es szezonjukat veretlenül zárták, amit azóta sem tudott senki megismételni.", 3),
-        # ... (a többi AFC csapat itt folytatódik, ahogy az előző verzióban volt)
         ("New England Patriots", "Hazai város: Foxborough, Massachusetts. A 21. század dinasztiája, 6 Super Bowl-t nyertek Tom Brady-vel.", 3),
         ("New York Jets", "Hazai város: East Rutherford, New Jersey. Az 1969-es Super Bowl III-on aratott meglepetésgyőzelmük a sportág történetének egyik legnagyobb bravúrja.", 3),
         ("Baltimore Ravens", "Hazai város: Baltimore, Maryland. A csapat a kemény védekezéséről híres; kétszeres Super Bowl győztesek.", 3),
@@ -88,7 +98,6 @@ try:
         # === Csapatok (NFC - category_id = 4) ===
         ("Dallas Cowboys", "Hazai város: Arlington, Texas. Gyakran emlegetik 'Amerika Csapataként' hatalmas népszerűségük miatt.", 4),
         ("New York Giants", "Hazai város: East Rutherford, New Jersey. Négyszeres Super Bowl győztesek, kétszer a Patriots meglepetésre történő legyőzésével.", 4),
-        # ... (a többi NFC csapat itt folytatódik, ahogy az előző verzióban volt)
         ("Philadelphia Eagles", "Hazai város: Philadelphia, Pennsylvania. Rendkívül fanatikus és hangos szurkolótáboruk van.", 4),
         ("Washington Commanders", "Hazai város: Landover, Maryland. A csapat több névváltoztatáson esett át az elmúlt években.", 4),
         ("Chicago Bears", "Hazai város: Chicago, Illinois. Az NFL egyik alapító csapata, a liga történetének legtöbb győzelmével rendelkeznek.", 4),
