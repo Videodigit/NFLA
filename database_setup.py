@@ -3,7 +3,7 @@ import os
 
 DB_FILE = "nfl_akademia.db"
 
-# Töröljük a régi adatbázis fájlt, ha létezik, hogy teljesen tiszta alapról induljunk
+# Töröljük a régi adatbázis fájlt, ha létezik
 if os.path.exists(DB_FILE):
     os.remove(DB_FILE)
     print(f"A régi '{DB_FILE}' adatbázis sikeresen törölve.")
@@ -44,17 +44,32 @@ try:
 
     # Bejegyzések (Teljes lista)
     entries_to_add = [
-        # Szabályok (category_id = 1)
-        ("Touchdown (TD)", "A támadó csapat pontot szerez, ha a labdát beviszi az ellenfél célterületére (end zone). Értéke 6 pont.", 1),
-        ("Field Goal (FG)", "A csapat a labdát a kapuba rúgja. Értéke 3 pont.", 1),
+        # === Szabályok (category_id = 1) ===
+        ("Down (Kísérlet)", "A támadó csapatnak 4 kísérlete (down) van, hogy legalább 10 yardot előrehaladjon a labdával. Ha sikerül, újabb 4 kísérletet kapnak (first down).", 1),
+        ("First Down (Első kísérlet)", "Amikor a támadócsapat sikeresen megtesz 10 vagy több yardot a 4 kísérletén belül, 'first down'-t ér el, és ezzel újabb 4 kísérletet szerez.", 1),
+        ("Turnover on Downs", "Ha a támadócsapat a 4 kísérletéből sem tud 10 yardot megtenni, a labda az ellenfélhez kerül azon a ponton, ahol az utolsó kísérlet véget ért.", 1),
+        ("Touchdown (TD)", "A támadó csapat pontot szerez, ha a labdát beviszi, vagy ott elkapja az ellenfél célterületén (end zone). Értéke 6 pont.", 1),
+        ("Extra Pont (PAT)", "Egy sikeres touchdown után a csapat megpróbálhatja a labdát a kapuba rúgni 1 extra pontért.", 1),
+        ("Two-Point Conversion", "Extra pont helyett a csapat dönthet úgy, hogy egyetlen játékból megpróbálja újra bevinni a labdát a célterületre 2 pontért. Ez sokkal kockázatosabb.", 1),
+        ("Field Goal (FG)", "Ha a csapat nem tud touchdownt szerezni, de elég közel van a kapuhoz, megpróbálhatja a labdát a kapufák közé rúgni 3 pontért.", 1),
+        ("Safety", "A védekező csapat szerez 2 pontot, ha a labdát birtokló támadójátékost annak saját célterületén (end zone) a földre viszik (szerelik). A pontszerzés után a labda is a védekező csapathoz kerül.", 1),
+        ("Fumble", "Amikor a labdát cipelő játékos elejti a labdát, mielőtt a földet érné (szerelés után). A 'szabad labdát' bármelyik csapat megszerezheti.", 1),
+        ("False Start (Rossz rajt)", "Támadói büntetés (5 yard). Akkor történik, ha egy támadójátékos a labda játékba hozatala előtt megmozdul.", 1),
+        ("Offside (Les)", "Védői büntetés (5 yard). Akkor történik, ha egy védőjátékos a labda játékba hozatala előtt a semleges zónában (a labda vonalán) tartózkodik, vagy átlépi azt.", 1),
+        ("Holding (Visszahúzás)", "Az egyik leggyakoribb büntetés. Akkor ítélik, ha egy játékos szabálytalanul megragadja vagy visszahúzza az ellenfelét. Támadóknál 10 yard, védőknél 5 yard büntetést és automatikus első kísérletet jelent.", 1),
+        ("Pass Interference (Passz akadályozás)", "Akkor ítélik, ha egy játékos azelőtt akadályozza az ellenfelét a labda elkapásában, hogy a labda odaérne. A labda a szabálytalanság helyére kerül, és a sértett csapat automatikus első kísérletet kap.", 1),
+        ("Roughing the Passer (Irányító durva támadása)", "Védői büntetés (15 yard és automatikus első kísérlet). Szigorúan védik az irányítókat; miután eldobta a labdát, nem lehet őt durván támadni vagy a földre vinni.", 1),
         
-        # Kifejezések (category_id = 2)
+        # === Kifejezések (category_id = 2) ===
         ("Sack", "Amikor a védelem a labdát birtokló irányítót (quarterback) a kezdővonal mögött a földre viszi.", 2),
         ("Interception", "Amikor egy védőjátékos elkapja az ellenfél irányítójának dobását.", 2),
+        ("Line of Scrimmage (Kezdővonal)", "Az a képzeletbeli vonal, ahonnan a játékok indulnak. A támadók és a védők e vonal két oldalán sorakoznak fel.", 2),
+        ("Pocket (Zseb)", "Az a képzeletbeli terület, amit a támadófal tagjai alakítanak ki az irányító körül, hogy megvédjék őt a passz eldobásáig.", 2),
 
-        # === AFC Csapatok (category_id = 3) ===
+        # === Csapatok (AFC - category_id = 3) ===
         ("Buffalo Bills", "Hazai város: Orchard Park, New York. Híresek a rendkívül szenvedélyes szurkolótáborukról, a 'Bills Mafia'-ról.", 3),
         ("Miami Dolphins", "Hazai város: Miami Gardens, Florida. Az 1972-es szezonjukat veretlenül zárták, amit azóta sem tudott senki megismételni.", 3),
+        # ... (a többi AFC csapat itt folytatódik, ahogy az előző verzióban volt)
         ("New England Patriots", "Hazai város: Foxborough, Massachusetts. A 21. század dinasztiája, 6 Super Bowl-t nyertek Tom Brady-vel.", 3),
         ("New York Jets", "Hazai város: East Rutherford, New Jersey. Az 1969-es Super Bowl III-on aratott meglepetésgyőzelmük a sportág történetének egyik legnagyobb bravúrja.", 3),
         ("Baltimore Ravens", "Hazai város: Baltimore, Maryland. A csapat a kemény védekezéséről híres; kétszeres Super Bowl győztesek.", 3),
@@ -69,10 +84,11 @@ try:
         ("Kansas City Chiefs", "Hazai város: Kansas City, Missouri. A 2020-as évek domináns csapata Patrick Mahomes vezetésével.", 3),
         ("Las Vegas Raiders", "Hazai város: Las Vegas, Nevada. Hírhedtek a 'Raider Nation' szurkolótáborukról és kemény játékstílusukról.", 3),
         ("Los Angeles Chargers", "Hazai város: Inglewood, California. Jellegzetes, villám logójuk van, és látványos támadójátékukról ismertek.", 3),
-
-        # === NFC Csapatok (category_id = 4) ===
+        
+        # === Csapatok (NFC - category_id = 4) ===
         ("Dallas Cowboys", "Hazai város: Arlington, Texas. Gyakran emlegetik 'Amerika Csapataként' hatalmas népszerűségük miatt.", 4),
         ("New York Giants", "Hazai város: East Rutherford, New Jersey. Négyszeres Super Bowl győztesek, kétszer a Patriots meglepetésre történő legyőzésével.", 4),
+        # ... (a többi NFC csapat itt folytatódik, ahogy az előző verzióban volt)
         ("Philadelphia Eagles", "Hazai város: Philadelphia, Pennsylvania. Rendkívül fanatikus és hangos szurkolótáboruk van.", 4),
         ("Washington Commanders", "Hazai város: Landover, Maryland. A csapat több névváltoztatáson esett át az elmúlt években.", 4),
         ("Chicago Bears", "Hazai város: Chicago, Illinois. Az NFL egyik alapító csapata, a liga történetének legtöbb győzelmével rendelkeznek.", 4),
