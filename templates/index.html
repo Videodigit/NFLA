@@ -7,7 +7,8 @@
     <style>
         body { font-family: sans-serif; max-width: 800px; margin: 40px auto; padding: 0 20px; line-height: 1.6; }
         h1 { color: #2c3e50; }
-        select { width: 100%; padding: 10px; margin-bottom: 20px; font-size: 16px; }
+        label { font-weight: bold; margin-top: 15px; display: block; }
+        select { width: 100%; padding: 10px; margin-bottom: 20px; font-size: 16px; margin-top: 5px;}
         #description-display { padding: 20px; background-color: #f9f9f9; border: 1px solid #ddd; border-radius: 5px; min-height: 100px; }
         footer { margin-top: 40px; text-align: center; font-size: 12px; color: #7f8c8d; }
     </style>
@@ -15,55 +16,70 @@
 <body>
 
     <h1>🏈 Touchdown Akadémia</h1>
-    <p>Válassz egy kifejezést, szabályt vagy csapatot a listából, hogy megjelenjen a leírása!</p>
-
-    <select id="terms-select">
+    
+    <label for="select-kifejezesek">Kifejezések</label>
+    <select id="select-kifejezesek" class="term-selector">
         <option value="">Válassz...</option>
-        
-        {% for category in categories %}
-            <optgroup label="{{ category['name'] }}">
-                {% for entry in entries %}
-                    {% if entry['category_id'] == category['id'] %}
-                        <option value="{{ entry['id'] }}">{{ entry['term'] }}</option>
-                    {% endif %}
-                {% endfor %}
-            </optgroup>
+        {% for entry in data.kifejezesek %}
+            <option value="{{ entry.id }}">{{ entry.term }}</option>
+        {% endfor %}
+    </select>
+
+    <label for="select-szabalyok">Szabályok</label>
+    <select id="select-szabalyok" class="term-selector">
+        <option value="">Válassz...</option>
+        {% for entry in data.szabalyok %}
+            <option value="{{ entry.id }}">{{ entry.term }}</option>
+        {% endfor %}
+    </select>
+
+    <label for="select-csapatok">Csapatok</label>
+    <select id="select-csapatok" class="term-selector">
+        <option value="">Válassz...</option>
+        {% for entry in data.csapatok %}
+            <option value="{{ entry.id }}">{{ entry.term }}</option>
         {% endfor %}
     </select>
 
     <div id="description-display">
-        <p>Itt fog megjelenni a kiválasztott elem leírása.</p>
+        <p>Válassz egyet a fenti listákból a leíráshoz!</p>
     </div>
 
     <footer>
         <p>Ez az oldal egy független, oktatási célú projekt.</p>
     </footer>
 
-
     <script>
-        // A Flask által átadott összes adatot beletesszük egy JavaScript változóba.
-        // A 'tojson' filter biztonságosan konvertálja a Python adatokat JSON formátumra.
-        const entries = {{ entries | tojson }};
-
-        const selectElement = document.getElementById('terms-select');
+        // Az összes bejegyzést eltároljuk egy JS változóban a könnyű kereséshez
+        const allEntries = {{ data.all_entries_for_js | tojson }};
+        const allSelectors = document.querySelectorAll('.term-selector');
         const descriptionDisplay = document.getElementById('description-display');
 
-        selectElement.addEventListener('change', (event) => {
-            const selectedId = event.target.value;
+        allSelectors.forEach(selector => {
+            selector.addEventListener('change', (event) => {
+                // Az a menü, amelyikben választottunk
+                const currentSelector = event.target;
+                const selectedId = currentSelector.value;
 
-            // Ha a "Válassz..." opciót választják, töröljük a leírást.
-            if (!selectedId) {
-                descriptionDisplay.innerHTML = '<p>Itt fog megjelenni a kiválasztott elem leírása.</p>';
-                return;
-            }
+                // A többi menüt visszaállítjuk az alaphelyzetbe
+                allSelectors.forEach(otherSelector => {
+                    if (otherSelector !== currentSelector) {
+                        otherSelector.value = "";
+                    }
+                });
 
-            // Megkeressük a kiválasztott ID-hoz tartozó bejegyzést az 'entries' tömbben.
-            const selectedEntry = entries.find(entry => entry.id == selectedId);
+                // Leírás megjelenítése
+                if (!selectedId) {
+                    descriptionDisplay.innerHTML = '<p>Válassz egyet a fenti listákból a leíráshoz!</p>';
+                    return;
+                }
 
-            if (selectedEntry) {
-                // Ha megtaláltuk, beállítjuk a leírását a div tartalmának.
-                descriptionDisplay.innerHTML = `<p>${selectedEntry.description}</p>`;
-            }
+                const selectedEntry = allEntries.find(entry => entry.id == selectedId);
+                
+                if (selectedEntry) {
+                    descriptionDisplay.innerHTML = `<h3>${selectedEntry.term}</h3><p>${selectedEntry.description}</p>`;
+                }
+            });
         });
     </script>
 
