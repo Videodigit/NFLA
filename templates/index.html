@@ -3,17 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NFL Akadémia</title>
+    <title>Touchdown Akadémia</title>
     <style>
         body { font-family: sans-serif; max-width: 800px; margin: 40px auto; padding: 0 20px; line-height: 1.6; }
         h1 { color: #2c3e50; }
         select { width: 100%; padding: 10px; margin-bottom: 20px; font-size: 16px; }
         #description-display { padding: 20px; background-color: #f9f9f9; border: 1px solid #ddd; border-radius: 5px; min-height: 100px; }
+        footer { margin-top: 40px; text-align: center; font-size: 12px; color: #7f8c8d; }
     </style>
 </head>
 <body>
 
-    <h1>🏈 NFL Akadémia</h1>
+    <h1>🏈 Touchdown Akadémia</h1>
     <p>Válassz egy kifejezést, szabályt vagy csapatot a listából, hogy megjelenjen a leírása!</p>
 
     <select id="terms-select">
@@ -33,6 +34,11 @@
     <div id="description-display">
         <p>Itt fog megjelenni a kiválasztott elem leírása.</p>
     </div>
+
+    <footer>
+        <p>Ez az oldal egy független, oktatási célú projekt.</p>
+    </footer>
+
 
     <script>
         // A Flask által átadott összes adatot beletesszük egy JavaScript változóba.
