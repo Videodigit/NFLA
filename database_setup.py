@@ -3,7 +3,7 @@ import os
 
 DB_FILE = "nfl_akademia.db"
 
-# Töröljük a régi adatbázis fájlt, ha létezik, hogy teljesen tiszta alapról induljunk
+# Töröljük a régi adatbázis fájlt, ha létezik
 if os.path.exists(DB_FILE):
     os.remove(DB_FILE)
     print(f"A régi '{DB_FILE}' adatbázis sikeresen törölve.")
@@ -76,17 +76,18 @@ try:
         ("Turnover (Labdavesztés)", "Az a helyzet, amikor a támadó csapat elveszíti a labdát, és az az ellenfélhez kerül. Két fő formája a Fumble és az Interception.", 2),
 
         # === Játékosok (category_id = 3) ===
+        ("Center (C)", "A támadófal központi játékosa. Minden játékot ő indít azzal, hogy a labdát hátraadja (snap) az irányítónak.", 3),
+        ("Cornerback (CB)", "A védelem gyors játékosai, akik az ellenfél elkapóit (WR) próbálják semlegesíteni és megakadályozni őket a passz elkapásában.", 3),
+        ("Defensive Line (DL) - Védőfal", "Az a 3-4 játékosból álló egység, amely a védelem frontvonalát alkotja. Céljuk a futójáték megállítása és az irányító siettetése.", 3),
+        ("Kicker (K) - Rúgó", "A speciális csapategység tagja, aki a field goal-okat és az extra pontokat rúgja.", 3),
+        ("Linebacker (LB)", "A védelem 'mindenesei'. A védőfal mögött helyezkednek el, és részt vesznek a futás elleni védekezésben, az irányító siettetésében és a passzok levédekezésében is.", 3),
+        ("Offensive Line (OL) - Támadófal", "Az a 5 játékosból álló egység (beleértve a Centert), amelynek elsődleges feladata az irányító megvédése, illetve a futójátékosok számára az út blokkolása.", 3),
+        ("Punter (P)", "A speciális csapategység tagja. Akkor lép pályára, ha a csapat a 4. kísérletnél a labda elrúgása mellett dönt (punt), hogy az ellenfelet minél hátrébb szorítsa.", 3),
         ("Quarterback (QB) - Irányító", "A támadósor vezére, ő kapja a labdát minden játék elején. Döntenie kell, hogy fut, passzol, vagy átadja a labdát egy futónak.", 3),
         ("Running Back (RB) - Futójátékos", "A támadósor játékosa, akinek fő feladata, hogy a labdát cipelve a földön haladjon előre, áttörve a védelmen.", 3),
-        ("Wide Receiver (WR) - Elkapó", "A támadósor gyors játékosa, akinek fő feladata, hogy az irányító által dobott passzokat elkapja.", 3),
-        ("Tight End (TE)", "Hibrid pozíció a támadósorban. Egyaránt részt vesz a passzok elkapásában (mint egy elkapó) és a blokkolásban (mint egy támófalember).", 3),
-        ("Offensive Line (OL) - Támadófal", "Az a 5 játékosból álló egység, amelynek elsődleges feladata az irányító megvédése, illetve a futójátékosok számára az út blokkolása.", 3),
-        ("Defensive Line (DL) - Védőfal", "Az a 3-4 játékosból álló egység, amely a védelem frontvonalát alkotja. Céljuk a futójáték megállítása és az irányító siettetése.", 3),
-        ("Linebacker (LB)", "A védelem 'mindenesei'. A védőfal mögött helyezkednek el, és részt vesznek a futás elleni védekezésben, az irányító siettetésében és a passzok levédekezésében is.", 3),
-        ("Cornerback (CB)", "A védelem gyors játékosai, akik az ellenfél elkapóit (WR) próbálják semlegesíteni és megakadályozni őket a passz elkapásában.", 3),
         ("Safety (S)", "A védelem 'utolsó bástyái'. Ők helyezkednek el a legmélyebben a pályán, feladatuk a hosszú passzok levédekezése.", 3),
-        ("Kicker (K) - Rúgó", "A speciális csapategység tagja, aki a field goal-okat és az extra pontokat rúgja.", 3),
-        ("Punter (P)", "A speciális csapategység tagja. Akkor lép pályára, ha a csapat a 4. kísérletnél a labda elrúgása mellett dönt (punt).", 3),
+        ("Tight End (TE)", "Hibrid pozíció a támadósorban. Egyaránt részt vesz a passzok elkapásában (mint egy elkapó) és a blokkolásban (mint egy támadófalember).", 3),
+        ("Wide Receiver (WR) - Elkapó", "A támadósor gyors játékosa, akinek fő feladata, hogy az irányító által dobott passzokat elkapja.", 3),
 
         # === Csapatok (AFC - category_id = 4) ===
         ("Buffalo Bills", "Hazai város: Orchard Park, New York. Híresek a rendkívül szenvedélyes szurkolótáborukról, a 'Bills Mafia'-ról.", 4),
