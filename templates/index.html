@@ -8,19 +8,17 @@
         body {
             font-family: sans-serif;
             line-height: 1.6;
-            /* Háttérkép beállítása */
             background-image: url("{{ url_for('static', filename='hatter.jpg') }}");
-            background-size: cover; /* A kép töltse ki a teljes hátteret */
-            background-position: center; /* A kép közepe legyen középen */
-            background-attachment: fixed; /* A háttér görgetéskor fix marad */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
             margin: 0;
             padding: 40px 20px;
         }
-        /* Egy konténer a tartalomnak, hogy olvashatóbb legyen */
         .content-wrapper {
             max-width: 800px;
             margin: 0 auto;
-            background-color: rgba(255, 255, 255, 0.9); /* Enyhén áttetsző fehér háttér */
+            background-color: rgba(255, 255, 255, 0.9);
             padding: 20px 40px;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
@@ -50,6 +48,14 @@
         <select id="select-szabalyok" class="term-selector">
             <option value="">Válassz...</option>
             {% for entry in data.szabalyok %}
+                <option value="{{ entry.id }}">{{ entry.term }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="select-jatekosok">Játékosok</label>
+        <select id="select-jatekosok" class="term-selector">
+            <option value="">Válassz...</option>
+            {% for entry in data.jatekosok %}
                 <option value="{{ entry.id }}">{{ entry.term }}</option>
             {% endfor %}
         </select>
