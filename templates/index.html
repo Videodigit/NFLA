@@ -5,70 +5,89 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Touchdown Akadémia</title>
     <style>
-        body { font-family: sans-serif; max-width: 800px; margin: 40px auto; padding: 0 20px; line-height: 1.6; }
+        body {
+            font-family: sans-serif;
+            line-height: 1.6;
+            /* Háttérkép beállítása */
+            background-image: url("{{ url_for('static', filename='hatter.jpg') }}");
+            background-size: cover; /* A kép töltse ki a teljes hátteret */
+            background-position: center; /* A kép közepe legyen középen */
+            background-attachment: fixed; /* A háttér görgetéskor fix marad */
+            margin: 0;
+            padding: 40px 20px;
+        }
+        /* Egy konténer a tartalomnak, hogy olvashatóbb legyen */
+        .content-wrapper {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.9); /* Enyhén áttetsző fehér háttér */
+            padding: 20px 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
         h1 { color: #2c3e50; }
         label { font-weight: bold; margin-top: 15px; display: block; }
         select { width: 100%; padding: 10px; margin-bottom: 20px; font-size: 16px; margin-top: 5px;}
         #description-display { padding: 20px; background-color: #f9f9f9; border: 1px solid #ddd; border-radius: 5px; min-height: 100px; }
         footer { margin-top: 40px; text-align: center; font-size: 12px; color: #7f8c8d; }
+        footer a { color: #7f8c8d; text-decoration: none; }
     </style>
 </head>
 <body>
 
-    <h1>🏈 Touchdown Akadémia</h1>
-    
-    <label for="select-kifejezesek">Kifejezések</label>
-    <select id="select-kifejezesek" class="term-selector">
-        <option value="">Válassz...</option>
-        {% for entry in data.kifejezesek %}
-            <option value="{{ entry.id }}">{{ entry.term }}</option>
-        {% endfor %}
-    </select>
+    <div class="content-wrapper">
+        <h1>🏈 Touchdown Akadémia</h1>
+        
+        <label for="select-kifejezesek">Kifejezések</label>
+        <select id="select-kifejezesek" class="term-selector">
+            <option value="">Válassz...</option>
+            {% for entry in data.kifejezesek %}
+                <option value="{{ entry.id }}">{{ entry.term }}</option>
+            {% endfor %}
+        </select>
 
-    <label for="select-szabalyok">Szabályok</label>
-    <select id="select-szabalyok" class="term-selector">
-        <option value="">Válassz...</option>
-        {% for entry in data.szabalyok %}
-            <option value="{{ entry.id }}">{{ entry.term }}</option>
-        {% endfor %}
-    </select>
+        <label for="select-szabalyok">Szabályok</label>
+        <select id="select-szabalyok" class="term-selector">
+            <option value="">Válassz...</option>
+            {% for entry in data.szabalyok %}
+                <option value="{{ entry.id }}">{{ entry.term }}</option>
+            {% endfor %}
+        </select>
 
-    <label for="select-csapatok">Csapatok</label>
-    <select id="select-csapatok" class="term-selector">
-        <option value="">Válassz...</option>
-        {% for entry in data.csapatok %}
-            <option value="{{ entry.id }}">{{ entry.term }}</option>
-        {% endfor %}
-    </select>
+        <label for="select-csapatok">Csapatok</label>
+        <select id="select-csapatok" class="term-selector">
+            <option value="">Válassz...</option>
+            {% for entry in data.csapatok %}
+                <option value="{{ entry.id }}">{{ entry.term }}</option>
+            {% endfor %}
+        </select>
 
-    <div id="description-display">
-        <p>Válassz egyet a fenti listákból a leíráshoz!</p>
+        <div id="description-display">
+            <p>Válassz egyet a fenti listákból a leíráshoz!</p>
+        </div>
+
+        <footer>
+            <p>Ez az oldal egy független, oktatási célú projekt.</p>
+            <p>Background image <a href="https://www.freepik.com">designed by Freepik</a>.</p>
+        </footer>
     </div>
 
-    <footer>
-        <p>Ez az oldal egy független, oktatási célú projekt.</p>
-    </footer>
-
     <script>
-        // Az összes bejegyzést eltároljuk egy JS változóban a könnyű kereséshez
         const allEntries = {{ data.all_entries_for_js | tojson }};
         const allSelectors = document.querySelectorAll('.term-selector');
         const descriptionDisplay = document.getElementById('description-display');
 
         allSelectors.forEach(selector => {
             selector.addEventListener('change', (event) => {
-                // Az a menü, amelyikben választottunk
                 const currentSelector = event.target;
                 const selectedId = currentSelector.value;
 
-                // A többi menüt visszaállítjuk az alaphelyzetbe
                 allSelectors.forEach(otherSelector => {
                     if (otherSelector !== currentSelector) {
                         otherSelector.value = "";
                     }
                 });
-
-                // Leírás megjelenítése
+                
                 if (!selectedId) {
                     descriptionDisplay.innerHTML = '<p>Válassz egyet a fenti listákból a leíráshoz!</p>';
                     return;
