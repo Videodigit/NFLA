@@ -5,8 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Touchdown Akadémia</title>
     <style>
+        /* === TÉMA VÁLTOZÓK === */
+        :root {
+            /* Nappali (alapértelmezett) mód */
+            --bg-color: #f0f2f5;
+            --content-bg-color: rgba(255, 255, 255, 0.95);
+            --text-color: #333;
+            --header-color: #2c3e50;
+            --border-color: #ddd;
+            --select-bg-color: #fff;
+            --description-bg-color: #f9f9f9;
+        }
+
+        body.dark-mode {
+            /* Éjjeli mód felülírásai */
+            --bg-color: #1a202c;
+            --content-bg-color: rgba(45, 55, 72, 0.95);
+            --text-color: #e2e8f0;
+            --header-color: #fff;
+            --border-color: #4a5568;
+            --select-bg-color: #2d3748;
+            --description-bg-color: #2d3748;
+        }
+        /* ======================== */
+
         body {
-            font-family: sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             line-height: 1.6;
             background-image: url("{{ url_for('static', filename='hatter.jpg') }}");
             background-size: cover;
@@ -14,27 +38,76 @@
             background-attachment: fixed;
             margin: 0;
             padding: 40px 20px;
+            background-color: var(--bg-color); /* Változó használata */
+            color: var(--text-color); /* Változó használata */
+            transition: background-color 0.3s, color 0.3s;
         }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 20px; /* Térköz a cím és a menük között */
+        }
+        
+        #theme-toggle {
+            background: none;
+            border: 2px solid var(--border-color);
+            color: var(--text-color);
+            font-size: 1.5rem;
+            cursor: pointer;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            transition: transform 0.3s, border-color 0.3s;
+        }
+        #theme-toggle:hover {
+            transform: scale(1.1);
+        }
+
         .content-wrapper {
             max-width: 800px;
             margin: 0 auto;
-            background-color: rgba(255, 255, 255, 0.9);
+            background-color: var(--content-bg-color);
             padding: 20px 40px;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border: 1px solid var(--border-color);
+            transition: background-color 0.3s, border-color 0.3s;
         }
-        h1 { color: #2c3e50; }
+        h1 { color: var(--header-color); transition: color 0.3s; }
         label { font-weight: bold; margin-top: 15px; display: block; }
-        select { width: 100%; padding: 10px; margin-bottom: 20px; font-size: 16px; margin-top: 5px;}
-        #description-display { padding: 20px; background-color: #f9f9f9; border: 1px solid #ddd; border-radius: 5px; min-height: 100px; }
-        footer { margin-top: 40px; text-align: center; font-size: 12px; color: #7f8c8d; }
-        footer a { color: #7f8c8d; text-decoration: none; }
+        select { 
+            width: 100%; 
+            padding: 10px; 
+            margin-bottom: 20px; 
+            font-size: 16px; 
+            margin-top: 5px;
+            background-color: var(--select-bg-color);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+        }
+        #description-display { 
+            padding: 20px; 
+            background-color: var(--description-bg-color); 
+            border: 1px solid var(--border-color); 
+            border-radius: 5px; 
+            min-height: 100px; 
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+        footer { margin-top: 40px; text-align: center; font-size: 12px; color: var(--text-color); opacity: 0.7; }
+        footer a { color: var(--text-color); text-decoration: none; font-weight: bold;}
     </style>
 </head>
 <body>
 
     <div class="content-wrapper">
-        <h1>🏈 Touchdown Akadémia</h1>
+        <div class="header-container">
+            <h1 style="margin: 0;">🏈 Touchdown Akadémia</h1>
+            <button id="theme-toggle" title="Téma váltása">🌙</button>
+        </div>
         
         <label for="select-kifejezesek">Kifejezések</label>
         <select id="select-kifejezesek" class="term-selector">
@@ -74,7 +147,7 @@
 
         <footer>
             <p>Ez az oldal egy független, oktatási célú projekt.</p>
-            <p>Background image <a href="https://www.freepik.com">designed by Freepik</a>.</p>
+            <p>Background image <a href="https://www.freepik.com" target="_blank" rel="noopener noreferrer">designed by Freepik</a>.</p>
         </footer>
     </div>
 
@@ -105,6 +178,34 @@
                     descriptionDisplay.innerHTML = `<h3>${selectedEntry.term}</h3><p>${selectedEntry.description}</p>`;
                 }
             });
+        });
+
+        // === TÉMA VÁLTÓ LOGIKA ===
+        const themeToggleButton = document.getElementById('theme-toggle');
+        const body = document.body;
+
+        // Alkalmazza a témát és beállítja a gomb ikonját
+        function applyTheme(theme) {
+            if (theme === 'dark') {
+                body.classList.add('dark-mode');
+                themeToggleButton.textContent = '☀️'; // Nap ikon éjjeli módban
+            } else {
+                body.classList.remove('dark-mode');
+                themeToggleButton.textContent = '🌙'; // Hold ikon nappali módban
+            }
+        }
+
+        // Figyeli a gombnyomást
+        themeToggleButton.addEventListener('click', () => {
+            const newTheme = body.classList.contains('dark-mode') ? 'light' : 'dark';
+            localStorage.setItem('theme', newTheme);
+            applyTheme(newTheme);
+        });
+
+        // Oldalbetöltéskor betölti a mentett témát, vagy a nappalit, ha nincs mentett
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            applyTheme(savedTheme);
         });
     </script>
 
