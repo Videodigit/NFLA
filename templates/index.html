@@ -94,8 +94,8 @@
             background-color: var(--description-bg-color); 
             border: 1px solid var(--border-color); 
             border-radius: 5px; 
-            min-height: 100px; 
-            transition: background-color 0.3s, border-color 0.3s;
+            min-height: 240px; /* JAVÍTÁS: Tovább növelt minimális magasság */
+            transition: background-color 0.3s, border-color 0.3s, min-height 0.3s;
         }
         footer { margin-top: 40px; text-align: center; font-size: 12px; color: var(--text-color); opacity: 0.7; }
         footer a { color: var(--text-color); text-decoration: none; font-weight: bold;}
@@ -184,25 +184,22 @@
         const themeToggleButton = document.getElementById('theme-toggle');
         const body = document.body;
 
-        // Alkalmazza a témát és beállítja a gomb ikonját
         function applyTheme(theme) {
             if (theme === 'dark') {
                 body.classList.add('dark-mode');
-                themeToggleButton.textContent = '☀️'; // Nap ikon éjjeli módban
+                themeToggleButton.textContent = '☀️';
             } else {
                 body.classList.remove('dark-mode');
-                themeToggleButton.textContent = '🌙'; // Hold ikon nappali módban
+                themeToggleButton.textContent = '🌙';
             }
         }
 
-        // Figyeli a gombnyomást
         themeToggleButton.addEventListener('click', () => {
             const newTheme = body.classList.contains('dark-mode') ? 'light' : 'dark';
             localStorage.setItem('theme', newTheme);
             applyTheme(newTheme);
         });
-
-        // Oldalbetöltéskor betölti a mentett témát, vagy a nappalit, ha nincs mentett
+        
         document.addEventListener('DOMContentLoaded', () => {
             const savedTheme = localStorage.getItem('theme') || 'light';
             applyTheme(savedTheme);
